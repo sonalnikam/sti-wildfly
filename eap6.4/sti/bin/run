@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [ -n "$DEFAULT_DATASOURCE" ]
+then
+  echo APPDYNAMICS_ENABLED $APPDYNAMICS_ENABLED
+fi
+
+export APPDYNAMICS_NODE_NAME=${HOSTNAME%-*}
+if [ -z "$APPDYNAMICS_NODE_NAME" ]; then
+   export APPDYNAMICS_NODE_NAME=$HOSTNAME
+   echo "AppDynamics Hostname unrecognized - using hostname" >> /tmp/appdynamics.sti.log
+fi
+
+if [ -z "$APPDYNAMICS_APPLICATION_NAME" ]; then
+   export APPDYNAMICS_APPLICATION_NAME=${APPDYNAMICS_NODE_NAME%-*}
+   echo "AppDynamics Application Name not specified! using - ${APPDYNAMICS_APPLICATION_NAME}" >> /tmp/appdynamics.sti.log
+fi
+
+if [ -z "$APPDYNAMICS_TIER_NAME" ]; then
+   export APPDYNAMICS_TIER_NAME=${APPDYNAMICS_APPLICATION_NAME%-*}-tier
+   echo "AppDynamics Tier Name not specified! using - ${APPDYNAMICS_TIER_NAME}" >> /tmp/appdynamics.sti.log
+fi
+
+if [ -z "$APPDYNAMICS_ACCOUNT_ACCESS_KEY" ]; then
+   echo "AppDynamics Account Access Key not specified; Wont work!" >> /tmp/appdynamics.sti.log
+fi
+
+if [ -z "$APPDYNAMICS_ACCOUNT_NAME" ]; then
+  echo "AppDynamics Account Access Name not specified; Wont work!" >> /tmp/appdynamics.sti.log
+fi
+
+if [ -z "$APPDYNAMICS_CONTROLLER_HOST" ]; then
+  echo "AppDynamics Controller Hostname not specified; Wont work!" >> /tmp/appdynamics.sti.log
+fi
+
+if [ -z "$APPDYNAMICS_CONTROLLER_PORT" ]; then
+  echo "AppDynamics Controller Port not specified; Wont work!" >> /tmp/appdynamics.sti.log
+fi
+
+if [ -z "$APPDYNAMICS_CONTROLLER_SSL_ENABLED" ]; then
+  echo "AppDynamics Controller SSL Enabled not set; assume no ssl" >> /tmp/appdynamics.sti.log
+  export APPDYNAMICS_CONTROLLER_SSL_ENABLED=false;
+fi
+
+export JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xbootclasspath/p:/wildfly/modules/system/layers/base/org/jboss/log4j/logmanager/main/log4j-jboss-logmanager-1.0.2.Final-redhat-1.jar -javaagent:/opt/java-agent/javaagent.jar -Dappdynamics.controller.hostName=$APPDYNAMICS_CONTROLLER_HOST -Dappdynamics.controller.port=$APPDYNAMICS_CONTROLLER_PORT -Dappdynamics.agent.applicationName=$APPDYNAMICS_APPLICATION_NAME -Dappdynamics.agent.tierName=$APPDYNAMICS_TIER_NAME -Dappdynamics.agent.nodeName=$APPDYNAMICS_NODE_NAME -Dappdynamics.controller.ssl.enabled=$APPDYNAMICS_CONTROLLER_SSL_ENABLED -Dappdynamics.agent.accountName=$APPDYNAMICS_ACCOUNT_NAME -Dappdynamics.agent.accountAccessKey=$APPDYNAMICS_ACCOUNT_ACCESS_KEY -Djboss.modules.system.pkgs=org.jboss.byteman,com.appdynamics,com.appdynamics.,com.singularity,com.singularity."
+
+echo env  >> /tmp/myenv.env
+env >> /tmp/myenv.env
+
+# temp workaround to avoid base image starting 
+# Jolokia javaagent 
+echo "" > /opt/eap/bin/standalone.conf
+
+chown -R jboss:jboss /opt/eap/standalone/deployments/
+
+exec /opt/eap/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0

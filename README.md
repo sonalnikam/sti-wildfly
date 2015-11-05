@@ -14,11 +14,14 @@ WildFly versions currently provided are:
 CentOS versions currently provided are:
 * CentOS7
 
+EAP 6.4 version:
+* CentOS7
+
 
 Installation
 ---------------
 
-This image is available on DockerHub.  To download it, run:
+This image is not yet available on DockerHub.
 
 ```
 $ docker pull openshift/wildfly-81-centos7
@@ -30,11 +33,8 @@ To build a WildFly image from scratch, run:
 $ git clone https://github.com/openshift/sti-wildfly.git
 $ cd sti-wildfly
 $ make build VERSION=8.1
+$ make build VERSION=eap6.4
 ```
-
-** Note: by omitting the `VERSION` parameter, the build/test action be performed
-on all provided versions of WildFly.  Since we are currently only providing
-version `8.1`, you can omit this parameter.**
 
 Usage
 ---------------------
