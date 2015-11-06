@@ -27,12 +27,12 @@ This image is not yet available on DockerHub.
 $ docker pull openshift/wildfly-81-centos7
 ```
 
-To build a WildFly image from scratch, run:
+To build a WildFly, JBOSS EAP6.4 sti image from scratch, run:
 
 ```
-$ git clone https://github.com/openshift/sti-wildfly.git
+$ git clone https://github.com/appdynamics/sti-wildfly.git
 $ cd sti-wildfly
-$ make build VERSION=8.1
+$ make build VERSION=wildfly8.1
 $ make build VERSION=eap6.4
 ```
 
@@ -43,7 +43,30 @@ using standalone [S2I](https://github.com/openshift/source-to-image) and then ru
 resulting image with [Docker](http://docker.io) execute:
 
 ```
-$ s2i build git://github.com/bparees/openshift-jee-sample openshift/wildfly-81-centos7 wildflytest
+$ s2i build \
+        -e "APPDYNAMICS_APPLICATION_NAME=myapp, \
+            APPDYNAMICS_TIER_NAME=myapp-mytier, \
+            APPDYNAMICS_ACCOUNT_NAME=customer1, \
+            APPDYNAMICS_ACCOUNT_ACCESS_KEY=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX, \
+            APPDYNAMICS_CONTROLLER_HOST=myappdcontroller.server.com, \
+            APPDYNAMICS_CONTROLLER_PORT=XXX, \
+            APPDYNAMICS_CONTROLLER_SSL_ENABLED=true|false"  \
+        git://github.com/bparees/openshift-jee-sample \
+        openshift/wildfly-81-centos7 \
+        wildflytest
+
+$ s2i build  \
+        -e "APPDYNAMICS_APPLICATION_NAME=myapp, \
+            APPDYNAMICS_TIER_NAME=myapp-mytier, \
+            APPDYNAMICS_ACCOUNT_NAME=customer1, \
+            APPDYNAMICS_ACCOUNT_ACCESS_KEY=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX, \
+            APPDYNAMICS_CONTROLLER_HOST=myappdcontroller.server.com, \
+            APPDYNAMICS_CONTROLLER_PORT=XXX, \
+            APPDYNAMICS_CONTROLLER_SSL_ENABLED=true|false"  \
+        https://github.com/jim-minter/ose3-ticket-monster  \
+        appdynamics/wildfly-eap64-centos7:latest  \
+        eap64-ticketmonster
+
 $ docker run -p 8080:8080 wildflytest
 ```
 
@@ -61,12 +84,11 @@ which launches tests to check functionality of a simple WildFly application buil
 
     ```
     $ cd sti-wildfly
-    $ make test VERSION=8.1
+    $ make test VERSION=wildfly8.1
     ```
 
 **Notice: By omitting the `VERSION` parameter, the build/test action will be performed
-on all provided versions of WildFly. Since we are currently providing only version `8.1`
-you can omit this parameter.**
+on all provided versions of WildFly.**
 
 
 Repository organization
@@ -156,7 +178,7 @@ Image name structure
 2. Platform version(without dots) - 81
 3. Base builder image - centos7
 
-Example: `openshift/wildfly-81-centos7`
+Example: `appdynamics/wildfly-wildfly81-centos7`
 Environment variables
 ---------------------
 To set environment variables, you can place them as a key value pair into a `.sti/environment`
@@ -192,4 +214,4 @@ file inside your source code repository.
 Copyright
 --------------------
 
-Released under the Apache License 2.0. See the [LICENSE](https://github.com/openshift/sti-wildfly/blob/master/LICENSE) file.
+Released under the Apache License 2.0. See the [LICENSE](https://github.com/appdynamics/sti-wildfly/blob/master/LICENSE) file.
