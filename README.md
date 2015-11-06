@@ -54,7 +54,18 @@ $ s2i build \
         git://github.com/bparees/openshift-jee-sample \
         openshift/wildfly-81-centos7 \
         wildflytest
+$ docker run -p 8080:8080 wildflytest
 
+```
+
+**Accessing the application:**
+```
+$ curl 127.0.0.1:8080
+```
+
+
+To build a simple [jee application with JBOSS EAP6.4](https://github.com/jim-minter/ose3-ticket-monster)
+```
 $ s2i build  \
         -e "APPDYNAMICS_APPLICATION_NAME=myapp, \
             APPDYNAMICS_TIER_NAME=myapp-mytier, \
@@ -67,12 +78,6 @@ $ s2i build  \
         appdynamics/wildfly-eap64-centos7:latest  \
         eap64-ticketmonster
 
-$ docker run -p 8080:8080 wildflytest
-```
-
-**Accessing the application:**
-```
-$ curl 127.0.0.1:8080
 ```
 
 Test
