@@ -28,6 +28,14 @@ RUN yum install -y --enablerepo=centosplus \
     (curl -0 http://download.jboss.org/wildfly/$WILDFLY_VERSION_BIN/wildfly-$WILDFLY_VERSION_BIN.tar.gz | tar -zx --strip-components=1 -C /wildfly) && \
     mkdir -p /opt/s2i/destination
 
+ENV APPDYNAMICS_AGENT_VERSION 4.1.6.0
+ENV APPDYNAMICS_URL https://packages.appdynamics.com/java
+RUN wget $APPDYNAMICS_URL/$APPDYNAMICS_AGENT_VERSION/AppServerAgent-$APPDYNAMICS_AGENT_VERSION.zip  && \
+    mkdir -p /opt/java-agent && \
+    unzip -q AppServerAgent-$APPDYNAMICS_AGENT_VERSION.zip -d /opt/java-agent && \
+    chmod -R 777 /opt/java-agent/ver$APPDYNAMICS_AGENT_VERSION && \
+    rm -rf AppServerAgent-$APPDYNAMICS_AGENT_VERSION.zip
+
 # Add sti wildfly customizations
 ADD ./contrib/wfmodules/ /wildfly/modules/
 ADD ./contrib/wfbin/standalone.conf /wildfly/bin/standalone.conf

@@ -1,8 +1,8 @@
-Wildfly - CentOS Docker image
-========================================
+Wildfly, EAP STI builder images with AppDynamics Agent
+=====================================================
 
 This repository contains the source for building various versions of
-the WildFly application as a reproducible Docker image using
+the WildFly and JBOSS EAP application as a reproducible Docker image using
 [source-to-image](https://github.com/openshift/source-to-image).
 The resulting image can be run using [Docker](http://docker.io).
 
@@ -11,11 +11,8 @@ Versions
 WildFly versions currently provided are:
 * WildFly v8.1
 
-CentOS versions currently provided are:
-* CentOS7
-
 EAP 6.4 version:
-* CentOS7
+* registry.access.redhat.com/jboss-eap-6/eap-openshift:6.4
 
 
 Installation
@@ -24,7 +21,7 @@ Installation
 This image is not yet available on DockerHub.
 
 ```
-$ docker pull openshift/wildfly-81-centos7
+$ docker pull appdynamics/sti-wildfly-eap64-centos7
 ```
 
 To build a WildFly, JBOSS EAP6.4 sti image from scratch, run:
@@ -52,7 +49,7 @@ $ s2i build \
             APPDYNAMICS_CONTROLLER_PORT=XXX, \
             APPDYNAMICS_CONTROLLER_SSL_ENABLED=true|false"  \
         git://github.com/bparees/openshift-jee-sample \
-        openshift/wildfly-81-centos7 \
+        appdynamics/sti-wildfly-eap64-centos7 \
         wildflytest
 $ docker run -p 8080:8080 wildflytest
 
@@ -75,7 +72,7 @@ $ s2i build  \
             APPDYNAMICS_CONTROLLER_PORT=XXX, \
             APPDYNAMICS_CONTROLLER_SSL_ENABLED=true|false"  \
         https://github.com/jim-minter/ose3-ticket-monster  \
-        appdynamics/wildfly-eap64-centos7:latest  \
+        appdynamics/sti-wildfly-eap64-centos7 \
         eap64-ticketmonster
 
 ```
