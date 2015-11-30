@@ -18,7 +18,9 @@ EAP 6.4 version:
 Installation
 ---------------
 
-This image is not yet available on DockerHub.
+This image is available on DockerHub at the following location:
+
+https://hub.docker.com/r/appdynamics/sti-wildfly-eap64-centos7
 
 ```
 $ docker pull appdynamics/sti-wildfly-eap64-centos7
