@@ -13,13 +13,13 @@ LABEL uninstall="Please visit http://github.com/AppDynamics/sti-wildfly for more
 LABEL install="Please visit http://github.com/AppDynamics/sti-wildfly for more details."
 LABEL stop="Please visit http://github.com/AppDynamics/sti-wildfly for more details."
 
-LABEL name="eap-openshift:6.4-appdynamics-4.1.6.0"
+LABEL name="eap-openshift:6.4-appdynamics-4.1.7.0"
 LABEL version=1.0
 LABEL release=1.0
 LABEL architecture=Linux/x64
 LABEL build-date=2015-12-11T10:00:00-05:00
 LABEL vendor=AppDynamics
-LABEL url=http://github.com/AppDynamics/sti-wildfl 
+LABEL url=http://github.com/AppDynamics/sti-wildfly 
 LABEL summary="EAP 6.4 builder image with AppDynamics Java agent"
 LABEL description="This enhanced builder image allows EAP 6.4 \
                   applications to be monitored using  \
@@ -27,11 +27,11 @@ LABEL description="This enhanced builder image allows EAP 6.4 \
 LABEL vcs-type=git
 LABEL vcs-url=http://github.com/AppDynamics/sti-wildfly
 LABEL vcs-ref=903d874ea4b8df219783bffb5d5936d19529f08e
-LABEL authoritative-source-url=https://hub.docker.com/r/appdynamics/sti-wildfly-eap64-centos7	
+LABEL authoritative-source-url=https://hub.docker.com/r/appdynamics/sti-wildfly-eap64-rhel7	
 LABEL distribution-scope=public
 LABEL changelog-url=https://github.com/Appdynamics/sti-wildfly/releases
 
-ENV APPDYNAMICS_AGENT_VERSION 4.1.6.0
+ENV APPDYNAMICS_AGENT_VERSION 4.1.7.0
 ENV APPDYNAMICS_URL https://packages.appdynamics.com/java
 RUN curl -o AppServerAgent-$APPDYNAMICS_AGENT_VERSION.zip \
     -0 $APPDYNAMICS_URL/$APPDYNAMICS_AGENT_VERSION/AppServerAgent-$APPDYNAMICS_AGENT_VERSION.zip  && \
