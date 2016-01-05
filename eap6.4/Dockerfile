@@ -31,6 +31,8 @@ LABEL authoritative-source-url=https://hub.docker.com/r/appdynamics/sti-wildfly-
 LABEL distribution-scope=public
 LABEL changelog-url=https://github.com/Appdynamics/sti-wildfly/releases
 
+RUN yum -y update java
+
 ENV APPDYNAMICS_AGENT_VERSION 4.1.7.0
 ENV APPDYNAMICS_URL https://packages.appdynamics.com/java
 RUN curl -o AppServerAgent-$APPDYNAMICS_AGENT_VERSION.zip \
