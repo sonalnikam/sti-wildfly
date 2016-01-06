@@ -18,7 +18,7 @@ EAP 6.4 version:
 Installation
 ---------------
 
-This image is available on DockerHub at the following location:
+A couple of JBoss EAP6.4 enhanced builder images (for CentOS7 and RHEL7) are available on DockerHub at the following locations:
 
 https://hub.docker.com/r/appdynamics/sti-wildfly-eap64-centos7
 
@@ -26,6 +26,11 @@ https://hub.docker.com/r/appdynamics/sti-wildfly-eap64-centos7
 $ docker pull appdynamics/sti-wildfly-eap64-centos7
 ```
 
+https://hub.docker.com/r/appdynamics/sti-wildfly-eap64-rhel7
+
+```
+$ docker pull appdynamics/sti-wildfly-eap64-rhel7
+```
 To build a WildFly, JBOSS EAP6.4 sti image from scratch, run:
 
 ```
