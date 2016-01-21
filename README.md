@@ -31,6 +31,12 @@ https://hub.docker.com/r/appdynamics/sti-wildfly-eap64-rhel7
 ```
 $ docker pull appdynamics/sti-wildfly-eap64-rhel7
 ```
+
+The RHEL7 image is also available on the RedHat Container Registry:
+```
+docker pull registry-appdimages.rhcloud.com/rhel7/appdynamics
+```
+
 To build a WildFly, JBOSS EAP6.4 sti image from scratch, run:
 
 ```
