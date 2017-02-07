@@ -22,15 +22,18 @@ LABEL io.k8s.description="Platform for building and running JEE applications on 
       io.openshift.s2i.destination="/opt/s2i/destination"
 
 # Install Maven, Wildfly 8
-RUN yum install -y --enablerepo=centosplus \
-    tar unzip bc which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel && \
+RUN INSTALL_PKGS="tar unzip bc which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel" && \
+    yum install -y --enablerepo=centosplus $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
     yum clean all -y && \
-    (curl -0 http://www.us.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | \
+    (curl -v https://www.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | \
     tar -zx -C /usr/local) && \
     ln -sf /usr/local/apache-maven-$MAVEN_VERSION/bin/mvn /usr/local/bin/mvn && \
+    mkdir -p $HOME/.m2 && \
     mkdir -p /wildfly && \
-    (curl -0 http://download.jboss.org/wildfly/$WILDFLY_VERSION_BIN/wildfly-$WILDFLY_VERSION_BIN.tar.gz | tar -zx --strip-components=1 -C /wildfly) && \
+    (curl -v https://download.jboss.org/wildfly/$WILDFLY_VERSION_BIN/wildfly-$WILDFLY_VERSION_BIN.tar.gz | tar -zx --strip-components=1 -C /wildfly) && \
     mkdir -p /opt/s2i/destination
+    
 
 ENV APPDYNAMICS_AGENT_VERSION 4.1.6.0
 ENV APPDYNAMICS_URL https://packages.appdynamics.com/java
