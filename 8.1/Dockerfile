@@ -47,11 +47,12 @@ RUN wget $APPDYNAMICS_URL/$APPDYNAMICS_AGENT_VERSION/AppServerAgent-$APPDYNAMICS
 ADD ./contrib/wfmodules/ /wildfly/modules/
 ADD ./contrib/wfbin/standalone.conf /wildfly/bin/standalone.conf
 ADD ./contrib/wfcfg/standalone.xml /wildfly/standalone/configuration/standalone.xml
+ADD ./contrib/settings.xml $HOME/.m2/
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
-RUN chown -R 1001:0 /wildfly && \
+RUN chown -R 1001:0 /wildfly && chown -R 1001:0 $HOME && \
     chmod -R ug+rw /wildfly && \
     chmod -R g+rw /opt/s2i/destination
 
