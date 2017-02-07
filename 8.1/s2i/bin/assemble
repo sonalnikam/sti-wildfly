@@ -10,9 +10,10 @@ PID_FILE=/tmp/wildfly.pid
 function restore_saved_artifacts() {
   if [ "$(ls /opt/s2i/destination/artifacts/ 2>/dev/null)" ]; then
     echo -n "Restoring saved artifacts from prior build..."
-    mv /opt/s2i/destination/artifacts/* $HOME/.
+    mv /opt/s2i/destination/artifacts/.m2/repository $HOME/.m2
   fi
 }
+
 
 # Return the deployment-scanner configuration
 function getscanconfig() {
@@ -28,7 +29,6 @@ function getscanconfig() {
     sleep 2
   done
 }
-
 # Verify that the deployment scanner has finished running
 function waitondeployments() {
   if ! ismgmtup; then
@@ -166,6 +166,19 @@ cp -Rf /opt/s2i/destination/src/. $LOCAL_SOURCE_DIR
 chgrp -R 0 $LOCAL_SOURCE_DIR
 chmod -R g+rw $LOCAL_SOURCE_DIR
 
+if [ -d $LOCAL_SOURCE_DIR/configuration ]; then
+  echo "Copying config files from project..."
+
+  if [ -f $LOCAL_SOURCE_DIR/configuration/settings.xml ]; then
+    mkdir -p $HOME/.m2
+    mv $LOCAL_SOURCE_DIR/configuration/settings.xml $HOME/.m2
+  fi
+
+  cp -v $LOCAL_SOURCE_DIR/configuration/* /wildfly/standalone/configuration/
+fi
+
+configure_proxy
+configure_mirrors
 # If a pom.xml is present, this is a normal build scenario
 # so run maven.
 if [ -f "$LOCAL_SOURCE_DIR/pom.xml" ]; then
@@ -204,6 +217,7 @@ if [ -d $LOCAL_SOURCE_DIR/target ]; then
   chgrp -R 0 $DEPLOY_DIR
   chmod -R g+rw $DEPLOY_DIR
 fi
+
 if [ -d $LOCAL_SOURCE_DIR/deployments ]; then
   cp $LOCAL_SOURCE_DIR/deployments/*.war $DEPLOY_DIR >& /dev/null
   chgrp -R 0 $DEPLOY_DIR
